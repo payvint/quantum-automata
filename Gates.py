@@ -6,6 +6,9 @@ class Gate:
     def __init__(self, tensor):
         self.tensor = tensor
 
+    def __mul__(self, other):
+        return np.tensordot(self.tensor, othe.tensor, 0)
+
     def calculate(self, vector):
         return np.dot(self.tensor, vector)
 
