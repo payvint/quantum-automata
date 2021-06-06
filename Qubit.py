@@ -4,20 +4,22 @@ from cmath import sqrt, sin, cos, exp, pi
 
 # define qubit in standart base
 class Qubit:
-    def __init__(self):
-        angle = random.uniform(0.0, pi / 2.0)
-        self.vector = np.array([cos(angle), sin(angle)], dtype=complex)
+    def __init__(self, *args):
+        angleTetha = random.uniform(0.0, 2 * pi)
+        anglePhi = random.uniform(0.0, 2 * pi)
+        if len(args) == 2:
+            angleTetha = pi / 180.0 * args[0]
+            anglePhi = pi / 180.0 * args[1]
+        elif len(args) != 0:
+            raise "Qubit initialization error"
+        self.vector = np.array([cos(angleTetha / 2.0), exp(1j * anglePhi) * sin(angleTetha / 2.0)], dtype=complex)
     
     def getVector(self):
         return self.vector
 
     def measure(self):
-        if self.vector[0] > self.vector[1]:
-            return np.array([0, 1], dtype=complex)
-        elif self.vector[0] < self.vector[1]:
-            return np.array([1, 0], dtype=complex)
-        randNumber = random.randint(0, 1)
-        return np.array([randNumber, (randNumber + 1) % 2], dtype=complex)
+        # implement measurement returns (0, 1) - always
+        return np.array([0, 1], dtype=complex)
 
     def measureAndSafe(self):
         self.vector = self.measure()
