@@ -1,8 +1,8 @@
 import numpy as np
 import random
-from cmath import sqrt, sin, cos, exp, pi
+from cmath import sqrt, sin, cos, arccos exp, pi
 
-# define qubit in standart base
+# define qubit in standart base of Bloch sphere
 class Qubit:
     def __init__(self, *args):
         angleTetha = random.uniform(0.0, 2 * pi)
@@ -18,11 +18,8 @@ class Qubit:
         return self.vector
 
     def measure(self):
-        # implement measurement returns (0, 1) - always
-        return np.array([0, 1], dtype=complex)
-
-    def measureAndSafe(self):
-        self.vector = self.measure()
+        angleTetha = arccos(self.vector[0]) * 2
+        return np.array([angleTetha / pi, (pi - angleTetha) / pi], dtype=complex)
 
     def apply(self, gate):
         self.vector = gate.calculate(self.vector)
@@ -44,12 +41,6 @@ class QubitSystem:
         totalVector = np.array([], dtype=complex)
         for qubit in self.system:
             np.append(totalVector, qubit.measure())
-        return totalVector
-    
-    def measureAndSafe(self):
-        totalVector = np.array([], dtype=complex)
-        for qubit in self.system:
-            np.append(totalVector, qubit.measureAndSafe())
         return totalVector
     
     def apply(self, gate, qubitsIndexes):
