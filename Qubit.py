@@ -18,7 +18,7 @@ class Qubit:
         return self.vector
 
     def measure(self):
-        angleTetha = acos(self.vector[0]) * 2
+        angleTetha = acos(self.vector[0]) * 2.0
         return np.array([angleTetha / pi, (pi - angleTetha) / pi], dtype=complex)
 
     def apply(self, gate):
@@ -28,8 +28,16 @@ class Qubit:
         self.vector = np.array([x, y], dtype=complex)
 
 class QubitSystem:
-    def __init__(self, n):
-        self.system = [Qubit()] * n
+    def __init__(self, *args):
+        if len(args) == 1:
+            self.system = [Qubit()] * args[0]
+        elif len(args) == 2:
+            system = []
+            for qubit in args[1]:
+                system.append(Qubit(qubit[0], qubit[1]))
+            self.system = system
+        else:
+            raise "Qubit system initialization error"
 
     def getVector(self):
         totalVector = np.array([], dtype=complex)
