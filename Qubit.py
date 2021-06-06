@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from cmath import sqrt, sin, cos, arccos exp, pi
+from cmath import sqrt, sin, cos, acos, exp, pi
 
 # define qubit in standart base of Bloch sphere
 class Qubit:
@@ -18,7 +18,7 @@ class Qubit:
         return self.vector
 
     def measure(self):
-        angleTetha = arccos(self.vector[0]) * 2
+        angleTetha = acos(self.vector[0]) * 2
         return np.array([angleTetha / pi, (pi - angleTetha) / pi], dtype=complex)
 
     def apply(self, gate):
