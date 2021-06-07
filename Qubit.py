@@ -17,9 +17,16 @@ class Qubit:
     def getVector(self):
         return self.vector
 
-    def measure(self):
+    def measureProbability(self):
         angleTetha = acos(self.vector[0]) * 2.0
         return np.array([angleTetha / pi, (pi - angleTetha) / pi], dtype=complex)
+    
+    def measure(self):
+        vector = self.measureProbability()
+        if vector[0] >= vector[1]:
+            return np.array([0.0, 1.0], dtype=complex)
+        else:
+            return np.array([1.0, 0.0], dtype=complex)
 
     def apply(self, gate):
         self.vector = gate.calculate(self.vector)
@@ -50,6 +57,12 @@ class QubitSystem:
         for qubit in self.system:
             np.append(totalVector, qubit.measure())
         return totalVector
+
+    def measureProbability(self):
+        totalVector = np.array([], dtype=complex)
+        for qubit in self.system:
+            np.append(totalVector, qubit.measureProbability())
+        return totalVector
     
     def apply(self, gate, qubitsIndexes):
         totalVector = np.array([], dtype=complex)
@@ -58,6 +71,9 @@ class QubitSystem:
         totalVector = gate.calculate(totalVector)
         for index in qubitsIndexes:
             self.system[index].set(totalVector[index * 2], totalVector[index * 2 + 1])
+
+    def getSize(self):
+        return 2 ** len(self.system)
 
 
 
