@@ -29,10 +29,3 @@ class Automaton:
     
     def getWord(self):
         return self.route
-
-# Examples:
-# QubitCleaner Done
-# Teleportation 
-# Ternary qubit measurement
-# Deutsch-Josza?
-# Grover
